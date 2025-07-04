@@ -1,9 +1,3 @@
-#!/usr/bin/env python3
-"""
-Interfaz Gráfica para el Algoritmo Genético
-Tarea 5: Algoritmo Genético
-"""
-
 import tkinter as tk
 from tkinter import ttk, messagebox, scrolledtext
 import threading
@@ -13,7 +7,6 @@ from funciones import FUNCIONES_PREDEFINIDAS
 from algoritmo_genetico import AlgoritmoGenetico, optimizar_funcion_personalizada
 
 class RedirectText:
-    """Redirige la salida de consola a un widget de texto"""
     def __init__(self, text_widget):
         self.text_widget = text_widget
     
@@ -27,7 +20,6 @@ class RedirectText:
         pass
 
 class AlgoritmoGeneticoGUI:
-    """Interfaz gráfica principal para el algoritmo genético"""
     
     def __init__(self, root):
         self.root = root
@@ -40,34 +32,23 @@ class AlgoritmoGeneticoGUI:
         self.redirigir_salida()
     
     def crear_widgets(self):
-        """Crea todos los widgets de la interfaz"""
-        # Título
+    
         title_frame = ttk.Frame(self.root)
         title_frame.pack(fill='x', padx=10, pady=5)
         ttk.Label(title_frame, text="🧬 Algoritmo Genético - Optimización de Funciones", 
                   font=('Arial', 14, 'bold')).pack()
         
-        # Crear notebook para pestañas
+
         self.notebook = ttk.Notebook(self.root)
         self.notebook.pack(fill='both', expand=True, padx=10, pady=5)
         
-        # Pestaña 1: Funciones predefinidas
         self.crear_pestana_predefinidas()
-        
-        # Pestaña 2: Función personalizada
         self.crear_pestana_personalizada()
-        
-        # Pestaña 3: Parámetros
         self.crear_pestana_parametros()
-        
-        # Área de resultados
         self.crear_area_resultados()
-        
-        # Botones de control
         self.crear_botones_control()
     
     def crear_pestana_predefinidas(self):
-        """Crea la pestaña para funciones predefinidas"""
         frame = ttk.Frame(self.notebook)
         self.notebook.add(frame, text="Funciones Predefinidas")
         
@@ -82,7 +63,6 @@ class AlgoritmoGeneticoGUI:
         ttk.Radiobutton(frame, text="Función Bidimensional: z = 20 + x - 10·cos(2π·x) + y - 10·cos(2π·y)", 
                        variable=self.funcion_predefinida, value="bidimensional").pack(anchor='w', padx=20)
         
-        # Información
         info_frame = ttk.LabelFrame(frame, text="Información")
         info_frame.pack(fill='x', padx=10, pady=10)
         
@@ -94,21 +74,18 @@ class AlgoritmoGeneticoGUI:
 • Ambas funciones utilizan el dominio [-10, 10] para todas las variables
 • El algoritmo genético encontrará el máximo global o local de la función seleccionada
 
-Dominio: [-10, 10] para todas las variables
-Objetivo: Maximizar el valor de la función"""
+Dominio: [-10, 10] para todas las variables"""
         
         info_text.insert('1.0', info_content)
         info_text.configure(state='disabled')
     
     def crear_pestana_personalizada(self):
-        """Crea la pestaña para función personalizada"""
         frame = ttk.Frame(self.notebook)
         self.notebook.add(frame, text="Función Personalizada")
         
         ttk.Label(frame, text="Defina su función personalizada:", 
                   font=('Arial', 11, 'bold')).pack(anchor='w', padx=10, pady=5)
         
-        # Número de variables
         var_frame = ttk.Frame(frame)
         var_frame.pack(fill='x', padx=10, pady=5)
         
@@ -119,16 +96,13 @@ Objetivo: Maximizar el valor de la función"""
         combo.pack(side='left', padx=5)
         combo.bind('<<ComboboxSelected>>', self.actualizar_variables)
         
-        # Expresión de la función
         ttk.Label(frame, text="Expresión matemática:").pack(anchor='w', padx=10, pady=(10,0))
         self.expresion_funcion = tk.StringVar(value="sin(x)**2 / x")
         ttk.Entry(frame, textvariable=self.expresion_funcion, width=60).pack(padx=10, pady=5)
         
-        # Dominio de las variables
         dominio_frame = ttk.LabelFrame(frame, text="Dominio de las Variables")
         dominio_frame.pack(fill='x', padx=10, pady=10)
         
-        # Variable X
         var1_frame = ttk.Frame(dominio_frame)
         var1_frame.pack(fill='x', padx=5, pady=2)
         
@@ -140,7 +114,6 @@ Objetivo: Maximizar el valor de la función"""
         self.x_max = tk.StringVar(value="10")
         ttk.Entry(var1_frame, textvariable=self.x_max, width=8).pack(side='left', padx=2)
         
-        # Variable Y
         self.var2_frame = ttk.Frame(dominio_frame)
         ttk.Label(self.var2_frame, text="Variable y:").pack(side='left')
         ttk.Label(self.var2_frame, text="Mín:").pack(side='left', padx=(20,0))
@@ -150,7 +123,6 @@ Objetivo: Maximizar el valor de la función"""
         self.y_max = tk.StringVar(value="10")
         ttk.Entry(self.var2_frame, textvariable=self.y_max, width=8).pack(side='left', padx=2)
         
-        # Ejemplos
         ejemplos_frame = ttk.LabelFrame(frame, text="Ejemplos de Funciones")
         ejemplos_frame.pack(fill='x', padx=10, pady=10)
         
@@ -160,14 +132,13 @@ Objetivo: Maximizar el valor de la función"""
         ejemplos_content = """Una Variable: sin(x)**2 / x, exp(-x**2), x**3 - 2*x**2 + x, abs(x) * cos(x)
 Dos Variables: x**2 + y**2, sin(x) * cos(y), exp(-(x**2 + y**2)), x*y - x**2 - y**2
 
-Funciones disponibles: sin, cos, tan, exp, log, sqrt, abs, pow
-Constantes: pi, e  |  Operadores: +, -, *, /, **, ()"""
+Funciones: sin, cos, tan, exp, log, sqrt, abs, pow
+Constantes: pi, e  //  Operadores: +, -, *, /, **, ()"""
         
         ejemplos_text.insert('1.0', ejemplos_content)
         ejemplos_text.configure(state='disabled')
     
     def crear_pestana_parametros(self):
-        """Crea la pestaña para parámetros del algoritmo"""
         frame = ttk.Frame(self.notebook)
         self.notebook.add(frame, text="Parámetros")
         
@@ -177,7 +148,6 @@ Constantes: pi, e  |  Operadores: +, -, *, /, **, ()"""
         params_frame = ttk.LabelFrame(frame, text="Parámetros")
         params_frame.pack(fill='x', padx=10, pady=10)
         
-        # Parámetros
         params = [
             ("Tamaño de la población:", "tamano_poblacion", "10"),
             ("Umbral de diferencia:", "umbral_diferencia", "0.05"),
@@ -194,7 +164,6 @@ Constantes: pi, e  |  Operadores: +, -, *, /, **, ()"""
             ttk.Entry(param_frame, textvariable=getattr(self, attr), width=10).pack(side='right')
     
     def crear_area_resultados(self):
-        """Crea el área para mostrar resultados"""
         results_frame = ttk.LabelFrame(self.root, text="Resultados de la Optimización")
         results_frame.pack(fill='both', expand=True, padx=10, pady=5)
         
@@ -203,14 +172,12 @@ Constantes: pi, e  |  Operadores: +, -, *, /, **, ()"""
                                                        font=('Courier', 9))
         self.resultado_text.pack(fill='both', expand=True, padx=5, pady=5)
         
-        # Mensaje inicial
         self.resultado_text.insert('1.0', "🧬 Bienvenido al Algoritmo Genético\n")
         self.resultado_text.insert('end', "Seleccione una función y presione 'Ejecutar Optimización'\n")
         self.resultado_text.insert('end', "="*60 + "\n")
         self.resultado_text.configure(state='disabled')
     
     def crear_botones_control(self):
-        """Crea los botones de control"""
         button_frame = ttk.Frame(self.root)
         button_frame.pack(fill='x', padx=10, pady=5)
         
@@ -228,24 +195,20 @@ Constantes: pi, e  |  Operadores: +, -, *, /, **, ()"""
         self.progress.pack(side='left', fill='x', expand=True, padx=20)
     
     def actualizar_variables(self, event=None):
-        """Muestra/oculta la segunda variable"""
         if self.num_variables.get() == "2":
             self.var2_frame.pack(fill='x', padx=5, pady=2)
         else:
             self.var2_frame.pack_forget()
     
     def redirigir_salida(self):
-        """Redirige la salida estándar al área de resultados"""
         self.redirect_text = RedirectText(self.resultado_text)
     
     def limpiar_resultados(self):
-        """Limpia el área de resultados"""
         self.resultado_text.configure(state='normal')
         self.resultado_text.delete('1.0', tk.END)
         self.resultado_text.configure(state='disabled')
     
     def obtener_parametros(self):
-        """Obtiene los parámetros del algoritmo"""
         try:
             return {
                 'tamano_poblacion': int(self.tamano_poblacion.get()),
@@ -258,7 +221,6 @@ Constantes: pi, e  |  Operadores: +, -, *, /, **, ()"""
             return None
     
     def ejecutar_optimizacion(self):
-        """Ejecuta la optimización en un hilo separado"""
         if self.ejecutando:
             messagebox.showwarning("Advertencia", "Ya hay una optimización en ejecución.")
             return
@@ -276,7 +238,6 @@ Constantes: pi, e  |  Operadores: +, -, *, /, **, ()"""
         thread.start()
     
     def ejecutar_optimizacion_thread(self, parametros):
-        """Ejecuta la optimización en hilo separado"""
         try:
             old_stdout = sys.stdout
             sys.stdout = self.redirect_text
@@ -293,7 +254,6 @@ Constantes: pi, e  |  Operadores: +, -, *, /, **, ()"""
             self.root.after(0, self.finalizar_optimizacion)
     
     def optimizar_predefinida(self, parametros):
-        """Optimiza una función predefinida"""
         tipo_funcion = self.funcion_predefinida.get()
         config = FUNCIONES_PREDEFINIDAS[tipo_funcion]
         
@@ -326,7 +286,6 @@ Constantes: pi, e  |  Operadores: +, -, *, /, **, ()"""
         print("=" * 60)
     
     def optimizar_personalizada(self, parametros):
-        """Optimiza una función personalizada"""
         try:
             expresion = self.expresion_funcion.get().strip()
             if not expresion:
@@ -373,13 +332,11 @@ Constantes: pi, e  |  Operadores: +, -, *, /, **, ()"""
             messagebox.showerror("Error", f"Error: {str(e)}")
     
     def finalizar_optimizacion(self):
-        """Finaliza la optimización"""
         self.ejecutando = False
         self.btn_ejecutar.configure(state='normal')
         self.progress.stop()
 
 def main():
-    """Función principal para ejecutar la GUI"""
     root = tk.Tk()
     app = AlgoritmoGeneticoGUI(root)
     root.mainloop()
